@@ -1,117 +1,192 @@
-//_____________________LOGIC__________________
-var Damage = 0;
-
 //Clicker
-var gold = 0;
+var money = player.money;
 
-var money = 0;
+function player(lvl,money) {
+	this.lvl = lvl;
+	this.money = money;
+}
 
-function tap(number) {
-    gold += number;
-	currentEnemy.health -= number;
-    updateDisplay(currentEnemy);
-	console.log(number)
-};
-//Upgrades
-var cursors = 0;
-var todlvl = 0;
+var player = new player(1,20);
 
-function buyCursor() {
-    var cursorCost = Math.floor(10 * Math.pow(1.1, cursors));
-    if (gold >= cursorCost) {                                   
-        cursors = cursors + 1;                                   
-    	gold -= cursorCost; 
-		todlvl += 1;
-		updateDisplay(currentEnemy);
+var playerlvl = 1;
+
+function upgradePlayerDamage() {
+	var upgradeCost = Math.floor(3 * Math.pow(1.45, playerlvl));
+    if (money >= upgradeCost) {  
+		playerlvl += 1;
+		money -= upgradeCost;
+		updatePlayer();
 	}
 }
+
+function tap(number) {
+	currentEnemy.health -= number;
+	enemyLogic();
+	updateDisplay();
+};
+
+//Upgrade Related Stuff
+function hero(name,initialdmg,initialcost) {
+	this.name = name;
+	this.dmg = 0;
+	this.lvl = 0;
+	this.initialcost = initialcost;
+	this.initialdmg = initialdmg;
+	this.upgradeCost = 0;
+	/*this.Sprite = new Image();
+	this.Sprite.src = img;*/
+}
+
+function upgrade(hero) {
+    var upgradeCost = Math.floor(hero.initialcost * Math.pow(1.1, hero.lvl));
+    if (money >= upgradeCost) {                                   
+        hero.dmg += (hero.lvl*hero.initialdmg);  
+		round(hero.dmg);
+		updateHeroDamage();
+    	money -= upgradeCost; 
+		hero.lvl += 1;
+		updateMoney();
+		updateHeroes();
+	}
+}
+
+var heroDamage = 0;
+
+function updateHeroDamage() {
+	heroDamage = tod.dmg + james.dmg;
+}
+
+//Tod
+var tod = new hero('Tod',2,10);
+
+function levelTod() {
+	upgrade(tod);
+}
+
+//James
+var james = new hero('James',3,18);
+function levelJames() {
+	upgrade(james);
+}
+
 //Round Numbers
 function round(input){
-    var output = Math.round(input * 1000000)/1000000;
+    var output = Math.round(input*100)/100;
 	return output;
 };
 
-
 //Enemy Logic
 function monster(name,img,health,timelimit,goldDrop) {
+	this.name = name;
 	this.Sprite = new Image();
 	this.Sprite.src = img;
-	this.name = name;
 	this.health = health;
 	this.goldDrop = goldDrop;
 }
 
-var slime1 = new monster('Slime1','Images/slime.png',100,60,2);
-var slime2 = new monster('Slime2','Images/slime.png',120,60,2);
-var slime3 = new monster('Slime3','Images/slime.png',130,60,3);
-var slime4 = new monster('Slime4','Images/slime.png',150,60,4);
-var slime5 = new monster('Slime5','Images/slime.png',160,60,5);
-var slime6 = new monster('Slime6','Images/slime.png',180,60,6);
-var slime7 = new monster('Slime7','Images/slime.png',190,60,7);
-var slimeBoss = new monster('Slime Boss','Images/slime.png',300,60);
+var monsterTypes = ['Slime', 'Pig'];
 
+function createMonster(boss, typeIndex) {
+	var type = monsterTypes[typeIndex];
+	var imagePath = 'Images/' + type + '.png';
+	var limit = 60;
+	var hp = Math.floor(Math.random() * (150 + (heroDamage * 20))) + (20 + (heroDamage * 20));
+	var gold = Math.floor(Math.random() * 12) + 3;
+	if (boss) {
+		type += " Boss";
+		hp = Math.floor(Math.random() * (700 + (heroDamage * 20))) + (400 + (heroDamage * 20));
+		gold = Math.floor(Math.random() * 90) + 60;
+	}
+	
+	this.monster = new monster(type, imagePath, hp, limit, gold);
+}
 
-var currentEnemy = slime1;
+var enemyNumber = 1;
+var enemyType = 0;
+var currentEnemy = new createMonster(enemyNumber % 8 == 0, enemyType).monster;
+
+function enemyLogic() {
+	if (currentEnemy.health <= 0) {
+		document.getElementById('enemyHealth').innerHTML = "Riperinos";
+		money += currentEnemy.goldDrop;
+		enemyNumber++;
+		enemyType++;
+		if (enemyType >= monsterTypes.length)
+		{
+			enemyType -= monsterTypes.length;
+		}
+		currentEnemy = new createMonster(enemyNumber % 8 == 0, enemyType).monster;
+	}
+}
 
 //______________________The Display______________________
-function updateDisplay(currentEnemy) {
-	document.getElementById('gold').innerHTML = round(gold);
-	document.getElementById('cursors').innerHTML = round(cursors);
+function updateMoney() {
+	document.getElementById('money').innerHTML = money;
+}
+
+function updatePlayer() {
+	document.getElementById('playerlevel').innerHTML = playerlvl;
+	var playerUpgradeCost = Math.floor(3 * Math.pow(1.45, playerlvl));
+	document.getElementById('playerupgradeCost').innerHTML = playerUpgradeCost;
+	var playerDamage = playerlvl * 2;
+	document.getElementById('playerDamage').innerHTML = playerDamage;
+}
+function updateHeroes() {
+	document.getElementById('todlvl').innerHTML = tod.lvl;
+	tod.upgradeCost = Math.floor(tod.initialcost * Math.pow(1.1, tod.lvl));
+	document.getElementById('todupgradeCost').innerHTML = round(tod.upgradeCost);
+	document.getElementById('toddmg').innerHTML = round(tod.dmg);
 	
-	var nextCost = Math.floor(10 * Math.pow(1.1,cursors)); document.getElementById('cursorCost').innerHTML = round(nextCost);
-	document.getElementById('clicker1').innerHTML = round(nextCost);
-	
-	document.getElementById('todlvl').innerHTML = todlvl;
-	
-	
-	
+	document.getElementById('jameslvl').innerHTML = james.lvl;
+	james.upgradeCost = Math.floor(james.initialcost * Math.pow(1.1, james.lvl));
+	document.getElementById('jamesupgradeCost').innerHTML = round(james.upgradeCost);
+	document.getElementById('jamesdmg').innerHTML = round(james.dmg);
+}
+
+function updateEnemyDisplay() {
 	document.getElementById('currentEnemy').innerHTML = currentEnemy.name;
 	document.getElementById('enemyHealth').innerHTML = currentEnemy.health;
 	document.getElementById('enemyImage').src = currentEnemy.Sprite.src;
-	
-	if(currentEnemy.health <= 0) {
-		document.getElementById('enemyHealth').innerHTML = "Riperinos";
-		money += currentEnemy.goldDrop;
-		document.getElementById('money').innerHTML = money;
-		
-	}
-	
 }
-//______________________Save Game________________________
-function save() {
-var storage = {
-		gold: gold,
-		cursors: cursors,
-		todlvl: todlvl
-}
-localStorage.setItem("storage",JSON.stringify(storage))
-};
 
+function updateDisplay() {
+	updatePlayer();
+	updateMoney();
+	updateHeroes();
+	updateEnemyDisplay();
+}
+
+//______________________Save Game________________________
 function load() {
 	var savegame = JSON.parse(localStorage.getItem("storage"));
 	
-	if (typeof savegame.gold !== "undefined") gold = savegame.gold;
-	if (typeof savegame.cursors !== "undefined") cursors = savegame.cursors;
-	if (typeof savegame.todlvl !== "undefined") todlvl = savegame.todlvl;
+	if (typeof savegame.money !== "undefined") money = savegame.money;
+	if (typeof savegame.enemyNumber !== "undefined") enemyNumber = savegame.enemyNumber;
 	gameRun();
+};
+
+function save() {
+	var storage = {
+		money: money,
+		enemyNumber: enemyNumber
+	}
+	localStorage.setItem("storage", JSON.stringify(storage));
 }
 
 function deleteSave() {
 	var storage = {
-		gold: 0,
-		cursors: 0,
-		todlvl: 0
-}
-localStorage.setItem("storage",JSON.stringify(storage))
-location.reload();
+		money: 0,
+		enemyNumber: 0
+	}
+	localStorage.setItem("storage",JSON.stringify(storage))
+	location.reload();
 }
 
 //_________________________The Game_________________________
 function gameRun() {
-window.setInterval(function(){
-	tap(cursors);
-	updateDisplay(currentEnemy);
-	save();
-}, 1000);
+	window.setInterval(function() {
+		tap(heroDamage);
+		updateDisplay();
+		save();
+	}, 1000);
 }
-

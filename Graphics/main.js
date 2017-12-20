@@ -1,116 +1,193 @@
-
-//_____________________LOGIC__________________
 //Clicker
-var cookies = 0;
+var money = player.money;
 
-function cookieClick(number){
-    cookies = cookies + number;
-    document.getElementById('cookies').innerHTML = round(cookies);
-};
-//Upgrades
-var cursors = 0;
+function player(lvl,money) {
+	this.lvl = lvl;
+	this.money = money;
+}
 
-function buyCursor(){
-    var cursorCost = Math.floor(10 * Math.pow(1.1,cursors));
-    if(cookies >= cursorCost){                                   
-        cursors = cursors + 1;                                   
-    	cookies = cookies - cursorCost;                          
+var player = new player(1,20);
+
+var playerlvl = 1;
+
+function upgradePlayerDamage() {
+	var upgradeCost = Math.floor(3 * Math.pow(1.45, playerlvl));
+    if (money >= upgradeCost) {  
+		playerlvl += 1;
+		money -= upgradeCost;
+		updatePlayer();
 	}
 }
+
+function tap(number) {
+	currentEnemy.health -= number;
+	enemyLogic();
+	updateDisplay();
+};
+
+//Upgrade Related Stuff
+function hero(name,initialdmg,initialcost) {
+	this.name = name;
+	this.dmg = 0;
+	this.lvl = 0;
+	this.initialcost = initialcost;
+	this.initialdmg = initialdmg;
+	this.upgradeCost = 0;
+	/*this.Sprite = new Image();
+	this.Sprite.src = img;*/
+}
+
+function upgrade(hero) {
+    var upgradeCost = Math.floor(hero.initialcost * Math.pow(1.1, hero.lvl));
+    if (money >= upgradeCost) {                                   
+        hero.dmg += (hero.lvl*hero.initialdmg);  
+		round(hero.dmg);
+		updateHeroDamage();
+    	money -= upgradeCost; 
+		hero.lvl += 1;
+		updateMoney();
+		updateHeroes();
+	}
+}
+
+var heroDamage = 0;
+
+function updateHeroDamage() {
+	heroDamage = tod.dmg + james.dmg;
+}
+
+//Tod
+var tod = new hero('Tod',2,10);
+
+function levelTod() {
+	upgrade(tod);
+}
+
+//James
+var james = new hero('James',3,18);
+function levelJames() {
+	upgrade(james);
+}
+
 //Round Numbers
 function round(input){
-    var output = Math.round(input * 1000000)/1000000;
+    var output = Math.round(input*100)/100;
 	return output;
 };
 
+//Enemy Logic
+function monster(name,img,health,timelimit,goldDrop) {
+	this.name = name;
+	this.Sprite = new Image();
+	this.Sprite.src = img;
+	this.health = health;
+	this.goldDrop = goldDrop;
+}
 
+var monsterTypes = ['Slime', 'Pig'];
 
+function createMonster(boss, typeIndex) {
+	var type = monsterTypes[typeIndex];
+	var imagePath = 'Images/' + type + '.png';
+	var limit = 60;
+	var hp = Math.floor(Math.random() * (150 + (heroDamage * 20))) + (20 + (heroDamage * 20));
+	var gold = Math.floor(Math.random() * 12) + 3;
+	if (boss) {
+		type += " Boss";
+		hp = Math.floor(Math.random() * (700 + (heroDamage * 20))) + (400 + (heroDamage * 20));
+		gold = Math.floor(Math.random() * 90) + 60;
+	}
+	
+	this.monster = new monster(type, imagePath, hp, limit, gold);
+}
 
+var enemyNumber = 1;
+var enemyType = 0;
+var currentEnemy = new createMonster(enemyNumber % 8 == 0, enemyType).monster;
+
+function enemyLogic() {
+	if (currentEnemy.health <= 0) {
+		document.getElementById('enemyHealth').innerHTML = "Riperinos";
+		money += currentEnemy.goldDrop;
+		enemyNumber++;
+		enemyType++;
+		if (enemyType >= monsterTypes.length)
+		{
+			enemyType -= monsterTypes.length;
+		}
+		currentEnemy = new createMonster(enemyNumber % 8 == 0, enemyType).monster;
+	}
+}
 
 //______________________The Display______________________
-
-function getMousePos(canvas, event) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: event.clientX - rect.left,
-		y: event.clientY - rect.top
-	};
-}
-function isInside(pos, rect){
-	return pos.x > rect.x && pos.x < rect.x+rect.width && pos.y < rect.y+rect.heigth && pos.y > rect.y
+function updateMoney() {
+	document.getElementById('money').innerHTML = money;
 }
 
-var canvas = document.getElementById('graphics');
-var context = canvas.getContext('2d');
-
-var rect = Button
-
-canvas.addEventListener('click', function(evt) {
-	var mousePos = getMousePos(canvas, evt);
-	if (isInside(mousePos,rect)) {
-		alert('clicked inside rect');
-    }else{
-        alert('clicked outside rect');
-    }	
-}, false);
-
-
-function Button(topx,lefty,width,height,fillcolor,linecolor,txt) {
-context.beginPath();
-context.rect(topx, lefty, height, width); 
-context.fillStyle = fillcolor;
-context.fill(); 
-context.lineWidth = 2;
-context.strokeStyle = linecolor; 
-context.stroke();
-context.closePath();
-context.fillStyle = 'red';
-context.fillText(txt,((topx+width)+topx)/2,((lefty+height)+lefty)/2);
+function updatePlayer() {
+	document.getElementById('playerlevel').innerHTML = playerlvl;
+	var playerUpgradeCost = Math.floor(3 * Math.pow(1.45, playerlvl));
+	document.getElementById('playerupgradeCost').innerHTML = playerUpgradeCost;
+	var playerDamage = playerlvl * 2;
+	document.getElementById('playerDamage').innerHTML = playerDamage;
+}
+function updateHeroes() {
+	document.getElementById('todlvl').innerHTML = tod.lvl;
+	tod.upgradeCost = Math.floor(tod.initialcost * Math.pow(1.1, tod.lvl));
+	document.getElementById('todupgradeCost').innerHTML = round(tod.upgradeCost);
+	document.getElementById('toddmg').innerHTML = round(tod.dmg);
+	
+	document.getElementById('jameslvl').innerHTML = james.lvl;
+	james.upgradeCost = Math.floor(james.initialcost * Math.pow(1.1, james.lvl));
+	document.getElementById('jamesupgradeCost').innerHTML = round(james.upgradeCost);
+	document.getElementById('jamesdmg').innerHTML = round(james.dmg);
 }
 
-var Stop = new Button(10,20,30,60,"aqua","black","STOP");
-
-var Start = new Button(40,80,30,60,"aqua","black","START");
-
+function updateEnemyDisplay() {
+	document.getElementById('currentEnemy').innerHTML = currentEnemy.name;
+	document.getElementById('enemyHealth').innerHTML = currentEnemy.health;
+	document.getElementById('enemyImage').src = currentEnemy.Sprite.src;
+}
 
 function updateDisplay() {
-	document.getElementById('cookies').innerHTML = round(cookies);
-	document.getElementById('cursors').innerHTML = round(cursors);
-	var nextCost = Math.floor(10 * Math.pow(1.1,cursors)); document.getElementById('cursorCost').innerHTML = round(nextCost);
-}	
+	updatePlayer();
+	updateMoney();
+	updateHeroes();
+	updateEnemyDisplay();
+}
 
 //______________________Save Game________________________
-function save() {
-var storage = {
-		cookies: cookies,
-		cursors: cursors
-}
-localStorage.setItem("storage",JSON.stringify(storage))
-};
-
 function load() {
 	var savegame = JSON.parse(localStorage.getItem("storage"));
 	
-	if (typeof savegame.cookies !== "undefined") cookies = savegame.cookies;
-	if (typeof savegame.cursors !== "undefined") cursors = savegame.cursors;
+	if (typeof savegame.money !== "undefined") money = savegame.money;
+	if (typeof savegame.enemyNumber !== "undefined") enemyNumber = savegame.enemyNumber;
+	drawButtons();
 	gameRun();
+};
+
+function save() {
+	var storage = {
+		money: money,
+		enemyNumber: enemyNumber
+	}
+	localStorage.setItem("storage", JSON.stringify(storage));
 }
 
 function deleteSave() {
 	var storage = {
-		cookies: 0,
-		cursors: 0
-}
-localStorage.setItem("storage",JSON.stringify(storage))
-location.reload();
+		money: 0,
+		enemyNumber: 0
+	}
+	localStorage.setItem("storage",JSON.stringify(storage))
+	location.reload();
 }
 
 //_________________________The Game_________________________
 function gameRun() {
-window.setInterval(function(){
-	cookieClick(cursors);
-	updateDisplay();
-	save();
-}, 1000);
+	window.setInterval(function() {
+		tap(heroDamage);
+		updateDisplay();
+		save();
+	}, 1000);
 }
-

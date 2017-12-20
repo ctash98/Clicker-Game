@@ -1,0 +1,14 @@
+#grafix {
+	padding: 40px;
+}
+
+#graphics {
+	position:fluid;
+	border:black 3px solid; 
+	background-color:aqua;
+}
+
+#footer {
+	position:fluid;
+	padding: 20px;
+}
