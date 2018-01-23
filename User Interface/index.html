@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<div id="tools">
+				<button onclick="deleteSave()">Reset Game? =(</button> <br/>
+				<button onclick="money=500000">Money=500000</button>
+		</div>
+	</head>
+	<body onload="load()">
+		<div id="wrapper">
+			<div id="displays">
+				<div id="player-display">
+					Player:<span id="playerName"> Monokuma <span/><br/>
+					Player Level: <span id="playerlevel">~</span> <br/>
+					Player Damage: <span id="playerDamage">~</span><br/>
+					<button onclick="upgradePlayerDamage();">Level Up Player= <span id="playerupgradeCost"> ~ </span></button><br/>
+				</div>
+					<div style="position:absolute; left:+130px;top:+160px;"> <span id="money">0</span></div><br/>
+				<div id="hero-display">
+					<div id="tod-display" style="margin-top:10px;margin-bottom :10px;">
+						<div style="position:relative; left: +40px;"> Tod - The Faithful Knight </div>
+						Tod Lvl:<span id="todlvl"></span> <br/>   
+						Tod Damage: <span id="toddmg">0</span> <br/>
+						<button onclick="levelTod();">Level Up Tod = <span id="todupgradeCost"> ~ </span></button> <br/>
+					</div>
+					<div id="james-display" style="margin-top:10px;margin-bottom:10px;">
+						<div style="position:relative; left: +40px;"> James - The Tea Drinking Brit </div>
+						James Lvl:<span id="jameslvl"></span><br/>   
+						James Damage: <span id="jamesdmg">0</span><br/>
+						<button onclick="levelJames();">Level Up James = <span id="jamesupgradeCost"> ~ </span></button><br/>
+					</div>				
+				</div>	
+				<div id="enemy-display">
+					
+					<canvas id="graphics" onclick="tap(playerlvl*2);"></canvas><br/>
+					<div style="position:relative;top:-600px;left:+10px;z-index:6;">
+					Current Enemy: <span id="currentEnemy"> ~ </span><br/>             <br/>
+					Enemy Health: <span id="enemyHealth"> 0 </span><br/>
+					</div>
+				</div>
+			</div>
+		</div>
+		</body>
+		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="display.js"></script>
+		<script type="text/javascript" src="controls.js"></script>
+		<script type="text/javascript" src="save.js"></script>		
+</html>

@@ -1,0 +1,71 @@
+#wrapper {
+    position: relative;
+	margin: 20px;
+	width: 1280px;
+    height: 720px;
+    top: 0;
+    left: 0;
+	z-index:0;
+	border: solid;
+	background-image: url('Images/Clicker Game UI.png');
+	-webkit-user-select: none;
+}
+
+#displays {
+	position:relative;
+	z-index:4;
+	font-size: 20px;
+	top: 15px;
+	left: +20px;
+	
+}
+#player-display {
+	position:relative;
+	top:+15px;
+	left:+125px;
+}
+#hero-display {
+	position:relative;
+	top:+90px;
+	left:+25px;
+	width: 330px;
+	height: 450px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 5px;
+}
+#enemy-display {
+	position: relative;
+	top: -535px;
+	left: 748px;
+}
+#graphics {
+    width: 440px;
+    height: 600px;
+	position: relative;
+    top: 0;
+    left: 0;
+	z-index:1;
+	background-color: powderblue;
+	border: solid; 
+}
+#buttons {
+	position: relative;
+    width: 250px;
+    height: 200px;
+    z-index: 4;
+    top: 2200px;
+    left: 275px;
+}
+#tap-button {
+	width: 200px;
+    height: 50px;   
+    font-size: 20px;
+    position: absolute;
+    z-index: 5;
+	left: 25px;
+}
+
+
+#footer {
+}
