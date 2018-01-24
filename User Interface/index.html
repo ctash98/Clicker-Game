@@ -1,13 +1,25 @@
+<!DOCTYPE html>
 <html>
+	
 	<head>
-		<link rel="stylesheet" href="style.css">
-		<div id="tools">
-				<button onclick="deleteSave()">Reset Game? =(</button> <br/>
-				<button onclick="money=500000">Money=500000</button>
-		</div>
+		<title>RPG Style Clicker Game </title>
+			<meta charset="UTF-8">
+			<meta name="description" content="The Average RPG Clicker Game (But Better)">
+			<meta name="keywords" content="HTML Clicker Game">
+			<meta name="author" content="Chris's Left Toe Nail">
 	</head>
-	<body onload="load()">
-		<div id="wrapper">
+	<body onload="load()" style="margin:0px;width:100%;height:100%;background-color:powderblue;padding:20px; overflow-x:hidden; overflow-y:hidden;">
+	
+		
+		<div id="overlay">
+			<h1> RPG Clicker Game </h1>
+			<h3> Coded By Team: Chris's Left Toenail </h3>
+			<p> Its a clicker game, Dude its not that complicated. click click click upgrade heroes and click click click and upgrade and then click some more. Have Fun! :D </p>
+				<div id="tools">
+					<button onclick="deleteSave()">Reset Game? =(</button> <br/>
+					<button onclick="money=500000">Money=500000</button>
+				</div><br/>
+			<div id="wrapper">
 			<div id="displays">
 				<div id="player-display">
 					Player:<span id="playerName"> Monokuma <span/><br/>
@@ -31,8 +43,7 @@
 					</div>				
 				</div>	
 				<div id="enemy-display">
-					
-					<canvas id="graphics" onclick="tap(playerlvl*2);"></canvas><br/>
+					<canvas id="graphics" onclick="tap(player.dmg);"></canvas><br/>
 					<div style="position:relative;top:-600px;left:+10px;z-index:6;">
 					Current Enemy: <span id="currentEnemy"> ~ </span><br/>             <br/>
 					Enemy Health: <span id="enemyHealth"> 0 </span><br/>
@@ -40,9 +51,13 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		</body>
-		<script type="text/javascript" src="main.js"></script>
+		<link rel="stylesheet" href="style.css">
 		<script type="text/javascript" src="display.js"></script>
+		<script type="text/javascript" src="heroes.js"></script>
+		<script type="text/javascript" src="enemies.js"></script>
 		<script type="text/javascript" src="controls.js"></script>
+		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="save.js"></script>		
 </html>

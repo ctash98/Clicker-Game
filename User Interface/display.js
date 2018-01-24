@@ -12,11 +12,10 @@ function updateMoney() {
 }
 
 function updatePlayer() {
-	document.getElementById('playerlevel').innerHTML = playerlvl;
-	var playerUpgradeCost = Math.floor(3 * Math.pow(1.45, playerlvl));
+	document.getElementById('playerlevel').innerHTML = player.lvl;
+	var playerUpgradeCost = Math.floor(3 * Math.pow(1.45, player.lvl));
 	document.getElementById('playerupgradeCost').innerHTML = playerUpgradeCost;
-	var playerDamage = playerlvl * 2;
-	document.getElementById('playerDamage').innerHTML = playerDamage;
+	document.getElementById('playerDamage').innerHTML = player.dmg;
 }
 function updateHeroes() {
 	document.getElementById('todlvl').innerHTML = tod.lvl;
