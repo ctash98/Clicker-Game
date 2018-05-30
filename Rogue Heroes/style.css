@@ -1,0 +1,150 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
+        background: transparent;
+    }
+html {
+	overflow-y: auto;
+	overflow-x: auto;
+}
+button {
+	border-radius: 30%;
+	background-color: #ffd700;
+	border: black;
+	box-shadow: 0 5px #999;
+	text-align: center;
+	color: black;
+	font-weight:bold;	
+}
+button:hover {
+	background-color: #e6c300
+}
+
+button:active {
+  background-color: #e6c300;
+  box-shadow: 0 3px #666;
+  transform: translateY(4px);
+}
+#overlay {
+}
+#wrapper {
+    position: fluid;
+	width: 1360px;
+	height: 780px;
+    top: 0;
+    left: 0;
+	z-index:0;
+	padding: 10px;
+	margin: auto;
+	border: solid black 5px;
+    background: #00004d;
+	-webkit-user-select: none;
+	display: block;
+}
+#displays {
+	position:relative;
+	z-index: 4;
+	font-size: 20px;
+	top: 15px;
+	left: +20px;
+	
+}
+#player-display {
+	position:relative;
+	top:+15px;
+	left:+25px;
+	padding: 10px;
+	width:330px;
+	height: 120px;
+	
+	border-radius: 25px;
+    background: #cc6600;
+	box-shadow: 0 10px #994d00;	
+     
+}
+
+#hero-display {
+	position:relative;
+	top:+90px;
+	left:+25px;
+	width: 330px;
+	height: 480px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px;
+	
+	border-radius: 25px;
+    background: #cc6600;
+	box-shadow: 0 10px #994d00;	
+     
+	
+}
+#hero-text {
+	position:relative; 
+	left: +40px;
+}
+
+#abilities-container {
+	position:relative;
+	top:-625px;
+	left:+425px;
+	width: 330px;
+	height: 695px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 10px;
+	text-align: center;
+	
+	border-radius: 25px;
+    background: #cc6600;
+	box-shadow: 0 10px #994d00;	
+}
+#enemy-display {
+	position: relative;
+	top: -1340px;
+	left: +850px;
+	width: 440px;
+	height: 715px;
+	
+	border-radius: 25px;
+    background: #cc6600;
+	box-shadow: 0 10px #994d00;
+}
+#graphics {
+    width: 420px;
+    height: 600px;
+	position: relative;
+	margin: auto;
+    top: -12300;
+    left: +400;
+	z-index:1; 
+	/*border: solid black 10px;*/
+}
+#enemy-text {
+	position:relative;
+	top:-600px;
+	left:+10px;
+	z-index:6;
+}
+#buttons {
+	position: relative;
+    width: 250px;
+    height: 200px;
+    z-index: 4;
+    top: 2200px;
+    left: 275px;
+}
+#tap-button {
+	width: 200px;
+    height: 50px;   
+    font-size: 20px;
+    position: absolute;
+    z-index: 5;
+	left: 25px;
+}
+#footer {
+}
